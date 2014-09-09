@@ -1,4 +1,5 @@
 .DS_Store
-sherbet
-node_modules
 bundle.js
+node_modules
+npm-debug.log
+sherbet

@@ -7,11 +7,11 @@ var $ = require("jquery"),
     },
     changeFrame = function(frame) {
         $("iframe[name='sherbet-frame']").attr("src", frame);
+        window.sherbet = window.frames["sherbet-frame"];
     },
     changeStylesheet = function(stylesheet) {
         var element,
-            head = window.frames["sherbet-frame"].document.head,
-            override = head.querySelector("#sherbet-style");
+            override = sherbet.document.head.querySelector("#sherbet-style");
 
         if (override) {
             override.remove();
@@ -20,7 +20,9 @@ var $ = require("jquery"),
         element = document.createElement("style");
         element.innerHTML = stylesheet;
         element.id = "sherbet-style";
-        head.appendChild(element);
+        sherbet.document.head.appendChild(element);
+
+        document.title = $(sherbet.document.head.querySelector("title")).text();
     };
 
 conn.onclose = function(e) {

@@ -10,8 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "browserify": "5.11.1",
-    "jquery": "2.1.1",
-    "lodash": "2.4.1"
+    "jquery": "2.1.1"
   },
   "scripts": {
     "build": "./node_modules/browserify/bin/cmd.js app.js -o ../web/bundle.js"
