@@ -7,7 +7,7 @@ var $ = require("jquery"),
     },
     changeFrame = function(frame) {
         $("iframe[name='sherbet-frame']").attr("src", frame);
-        window.sherbet = window.frames["sherbet-frame"];
+        window.app = window.frames["sherbet-frame"];
     },
     changeStylesheet = function(stylesheet) {
         var element,
