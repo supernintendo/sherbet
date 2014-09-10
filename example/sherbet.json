@@ -1,6 +1,6 @@
 {
     "port": 8080,
-    "frame": "http://localhost:8080/example/example.html",
+    "frame": "http://localhost:8080/example",
     "reloadCSS": "app.css",
     "watch": "./"
 }

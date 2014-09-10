@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"log"
@@ -46,12 +47,7 @@ func setupServer(port int, css string, watch string, frame string) {
 	// Make a new slice for our WebSocket connections.
 	connections = make(map[*websocket.Conn]bool)
 
-	// Deliver all files in our public directory.
-	fs := http.Dir("./web")
-	fileHandler := http.FileServer(fs)
-	http.Handle("/", fileHandler)
-
-	// Set up our WebSocket handler.
+	http.Handle("/", http.FileServer(&assetfs.AssetFS{Asset, AssetDir, "/build"}))
 	http.HandleFunc("/ws", wsHandler)
 
 	// Watch the directory for changes, sending a socket message if a change

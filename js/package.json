@@ -13,6 +13,6 @@
     "jquery": "2.1.1"
   },
   "scripts": {
-    "build": "./node_modules/browserify/bin/cmd.js app.js -o ../web/bundle.js"
+    "build": "./node_modules/browserify/bin/cmd.js app.js -o ../build/bundle.js"
   }
 }
