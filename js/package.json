@@ -14,5 +14,6 @@
   },
   "scripts": {
     "build": "./node_modules/browserify/bin/cmd.js app.js -o ../build/bundle.js"
-  }
+  },
+  "private": true
 }
