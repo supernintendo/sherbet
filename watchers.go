@@ -17,18 +17,19 @@ func newWatcher(path string, css string) {
 	go func() {
 		for {
 			select {
-			case ev := <-watcher.Event:
-				if ev.IsModify() {
-					s := strings.Split(ev.Name, "/")
+			case event := <-watcher.Event:
+				if event.IsModify() {
+					fileSlugs := strings.Split(event.Name, "/")
 
-					if s[len(s)-1] == css {
-						file, err := ioutil.ReadFile(ev.Name)
+					// Check that the event is related to the reloadCSS file.
+					if fileSlugs[len(fileSlugs)-1] == css {
+						file, err := ioutil.ReadFile(event.Name)
 						if err != nil {
 							fmt.Print("Error reading file.", err)
 						}
-						o := append([]byte("css:sherbet###"), file...)
+						outgoing := append([]byte("css:sherbet###"), file...)
 
-						sendAll([]byte(o))
+						sendAll([]byte(outgoing))
 					}
 				}
 			case err := <-watcher.Error:
