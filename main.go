@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/elazarl/go-bindata-assetfs"
+//	"github.com/elazarl/go-bindata-assetfs"
+	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"log"
@@ -46,16 +47,16 @@ func main() {
 func setupServer(port int, css string, watch string, frame string) {
 	// Make a new slice for our WebSocket connections.
 	connections = make(map[*websocket.Conn]bool)
-
-	http.Handle("/", http.FileServer(&assetfs.AssetFS{Asset, AssetDir, "/build"}))
-	http.HandleFunc("/ws", wsHandler)
+	router := mux.NewRouter()
+	router.Host("sherbet").HandlerFunc(frameHandler)
+	router.HandleFunc("/ws", wsHandler)
+	http.Handle("/", router)
 
 	// Watch the directory for changes, sending a socket message if a change
 	// was made to the CSS.
 	newWatcher(watch, css)
 
 	log.Printf("Running on port %d\n", port)
-
 	addr := fmt.Sprintf("127.0.0.1:%d", port)
 	err := http.ListenAndServe(addr, nil)
 	fmt.Println(err.Error())
