@@ -1,4 +1,5 @@
 .DS_Store
+bindata.go
 build/
 bundle.js
 node_modules
