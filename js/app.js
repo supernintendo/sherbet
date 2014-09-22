@@ -1,17 +1,8 @@
 var $ = require("jquery"),
     conn = new WebSocket("ws://localhost:8080/ws"),
-    adjustFrameHeight = function() {
-        $("iframe[name='sherbet-frame']").css({
-            height: $(window).height() + "px"
-        });
-    },
-    changeFrame = function(frame) {
-        $("iframe[name='sherbet-frame']").attr("src", frame);
-        window.app = window.frames["sherbet-frame"];
-    },
     changeStylesheet = function(stylesheet) {
         var element,
-            override = sherbet.document.head.querySelector("#sherbet-style");
+            override = document.head.querySelector("#sherbet-style");
 
         if (override) {
             override.remove();
@@ -20,9 +11,7 @@ var $ = require("jquery"),
         element = document.createElement("style");
         element.innerHTML = stylesheet;
         element.id = "sherbet-style";
-        sherbet.document.head.appendChild(element);
-
-        document.title = $(sherbet.document.head.querySelector("title")).text();
+        document.head.appendChild(element);
     };
 
 conn.onclose = function(e) {
@@ -40,14 +29,6 @@ conn.onmessage = function(e) {
         case "css":
             changeStylesheet(data[1]);
             break;
-        case "frame":
-            changeFrame(data[1]);
-            break;
         default:
     }
 };
-
-$(document).ready(function() {
-    $(window).on("resize", $.proxy(adjustFrameHeight, this));
-    adjustFrameHeight();
-});

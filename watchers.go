@@ -28,7 +28,6 @@ func newWatcher(path string, css string) {
 							fmt.Print("Error reading file.", err)
 						}
 						outgoing := append([]byte("css:sherbet###"), file...)
-
 						sendAll([]byte(outgoing))
 					}
 				}
