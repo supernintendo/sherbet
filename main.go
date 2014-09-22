@@ -14,10 +14,8 @@ import (
 )
 
 type Sherbetfile struct {
-	Port      int
-	Frame     string
-	ReloadCSS string
-	Watch     string
+	Port                       int
+	Frame, ReloadCSS, Watch    string
 }
 
 var conf Sherbetfile

@@ -27,8 +27,7 @@ func newWatcher(path string, css string) {
 						if err != nil {
 							fmt.Print("Error reading file.", err)
 						}
-						outgoing := append([]byte("css:sherbet###"), file...)
-						sendAll([]byte(outgoing))
+						sendAll("reloadCSS", file)
 					}
 				}
 			case err := <-watcher.Error:

@@ -23,11 +23,11 @@ conn.onopen = function(e) {
 };
 
 conn.onmessage = function(e) {
-    var data = e.data.split(":sherbet###");
+    var message = JSON.parse(e.data);
 
-    switch (data[0]) {
-        case "css":
-            changeStylesheet(data[1]);
+    switch (message.Category) {
+        case "reloadCSS":
+            changeStylesheet(message.Content);
             break;
         default:
     }

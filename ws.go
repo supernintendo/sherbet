@@ -1,16 +1,28 @@
 package main
 
 import (
+	"encoding/json"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 )
 
+type WSMessage struct {
+	Category, Content    string
+}
+
 var connections map[*websocket.Conn]bool
 
-func sendAll(msg []byte) {
+func sendAll(category string, msg []byte) {
+	wsMsg := &WSMessage{Category: category, Content: string(msg)}
+	outgoing, err := json.Marshal(wsMsg)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for conn := range connections {
-		if err := conn.WriteMessage(websocket.TextMessage, msg); err != nil {
+		if err := conn.WriteMessage(websocket.TextMessage, outgoing); err != nil {
 			delete(connections, conn)
 			conn.Close()
 		}
