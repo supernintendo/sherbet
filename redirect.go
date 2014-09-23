@@ -9,7 +9,10 @@ import (
 )
 
 func frameHandler(w http.ResponseWriter, r *http.Request) {
-	response, err := http.Get(conf.Frame + r.URL.Path[1:])
+	transport := &http.Transport{DisableCompression: true}
+	client := &http.Client{Transport: transport}
+
+	response, err := client.Get(framehost + r.URL.Path[1:])
 
 	if err != nil {
 		fmt.Printf("%s", err)
@@ -38,10 +41,10 @@ func frameHandler(w http.ResponseWriter, r *http.Request) {
 					c := append(b, []byte("</script>")...)
 					finalContents := append(c, []byte(bottom)...)
 
-					fmt.Printf(string(finalContents))
 					w.Write(finalContents)
 				}
 			} else {
+				w.WriteHeader(200)
 				w.Write(contents)
 			}
 		}
