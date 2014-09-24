@@ -13,39 +13,47 @@ import (
 )
 
 type Sherbetfile struct {
+	Directory                  string
+	Frame                      string
 	Port                       int
-	Frame, ReloadCSS, Watch    string
+	RootPath                   string
+    Target                     string
+    Watchers                   []Watcher
 }
 
-var conf Sherbetfile
-var framehost string
+func (s *Sherbetfile) SetFrame(f string) string {
+	if s.Target[len(s.Target) - 1] == '/' {
+		s.Frame = f
+	} else {
+		s.Frame = f + "/"
+	}
+	return s.Frame
+}
+
+var sherbetFile Sherbetfile
 
 func main() {
 	// Read sherbet.json
-	jsonFile := flag.String("json", "./sherbet.json", "json file to use")
+	jsonFile := flag.String("j", "./sherbet.json", "Sherbet JSON configuration file.")
 	flag.Parse()
-	content, err := ioutil.ReadFile(*jsonFile)
-	rootPath := "./" + filepath.Dir(*jsonFile)
+
+	s, err := ioutil.ReadFile(*jsonFile)
+
 	if err != nil {
 		fmt.Print("Error reading sherbet.json.", err)
 	}
-	err = json.Unmarshal(content, &conf)
+	err = json.Unmarshal(s, &sherbetFile)
+
 	if err != nil {
 		fmt.Print("Error parsing sherbet.json.", err)
 	}
-	parseFrameString()
-	setupServer(conf.Port, conf.ReloadCSS, rootPath+"/"+conf.Watch)
+	sherbetFile.RootPath = "./" + filepath.Dir(*jsonFile)
+	sherbetFile.SetFrame(sherbetFile.Target)
+	setupServer(sherbetFile)
 }
 
-func parseFrameString() {
-	if string(conf.Frame[len(conf.Frame) - 1]) == "/" {
-		framehost = conf.Frame
-	} else {
-		framehost = conf.Frame + "/"
-	}
-}
-
-func setupServer(port int, css string, watch string) {
+// func setupServer(port int, css string, watch string) {
+func setupServer(conf Sherbetfile) {
 	// Make a new slice for our WebSocket connections.
 	connections = make(map[*websocket.Conn]bool)
 	router := mux.NewRouter()
@@ -55,10 +63,13 @@ func setupServer(port int, css string, watch string) {
 
 	// Watch the directory for changes, sending a socket message if a change
 	// was made to the CSS.
-	newWatcher(watch, css)
 
-	log.Printf("Running on port %d\n", port)
-	addr := fmt.Sprintf("127.0.0.1:%d", port)
+	for i := range conf.Watchers {
+		activateWatcher(conf.Watchers[i])
+	}
+
+	log.Printf("Running on port %d\n", conf.Port)
+	addr := fmt.Sprintf("127.0.0.1:%d", conf.Port)
 	err := http.ListenAndServe(addr, nil)
 	fmt.Println(err.Error())
 }

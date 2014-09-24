@@ -19,15 +19,15 @@ conn.onclose = function(e) {
 };
 
 conn.onopen = function(e) {
-    conn.send("connected");
+    conn.send("Connected");
 };
 
 conn.onmessage = function(e) {
     var message = JSON.parse(e.data);
 
     switch (message.Category) {
-        case "reloadCSS":
-            changeStylesheet(message.Content);
+        case "CSS":
+            changeStylesheet(message.File);
             break;
         default:
     }
