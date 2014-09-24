@@ -1,6 +1,17 @@
 {
-    "port": 8080,
-    "frame": "http://127.0.0.1:4567/",
-    "reloadCSS": "app.css",
-    "watch": "./"
+    "Directory": "./",
+    "Port": 8080,
+    "Target": "http://127.0.0.1:4567/",
+    "Watchers": [
+        {
+            "Category": "CSS",
+            "Create": true,
+            "DeliverFile": true,
+            "File": "app.css",
+            "OnCreate": false,
+            "OnDelete": false,
+            "OnModify": true,
+            "OnRename": false
+        }
+    ]
 }
