@@ -16,6 +16,7 @@ type Watcher struct {
 	Message      string
 	OnCreate     bool
 	OnDelete     bool
+	OnLoad       bool
 	OnModify     bool
 	OnRename     bool
 }
