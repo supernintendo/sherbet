@@ -1,6 +1,6 @@
 {
     "Directory": "./",
-    "Port": 8080,
+    "Port": 7428,
     "Target": "http://127.0.0.1:4567/",
     "Watchers": [
         {
