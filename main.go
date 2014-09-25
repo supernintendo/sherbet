@@ -17,8 +17,8 @@ type Sherbetfile struct {
 	Frame                      string
 	Port                       int
 	RootPath                   string
-    Target                     string
-    Watchers                   []Watcher
+	Target                     string
+	Watchers                   []Watcher
 }
 
 func (s *Sherbetfile) SetFrame(f string) string {

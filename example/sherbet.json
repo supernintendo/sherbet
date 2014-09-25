@@ -10,6 +10,7 @@
             "File": "app.css",
             "OnCreate": false,
             "OnDelete": false,
+            "OnLoad": true,
             "OnModify": true,
             "OnRename": false
         }

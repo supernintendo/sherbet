@@ -1,12 +1,12 @@
 package main
 
-// import (
-// 	"io/ioutil"
-// )
+import (
+	"github.com/gorilla/websocket"
+)
 
-func dealWith(msg []byte) {
+func dealWith(msg []byte, c *websocket.Conn) {
 	switch string(msg) {
 	case "Connected":
-		sendAll("Status", make([]byte, 0, 1), "Connected.")
+		sendTo(c, "Status", make([]byte, 0, 1), "Connected.")
 	}
 }

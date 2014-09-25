@@ -8,25 +8,29 @@ import (
 )
 
 type WSMessage struct {
-    Category        string
+	Category        string
 	File            string
 	Message         string
 }
 
 var connections map[*websocket.Conn]bool
 
-func sendAll(c string, f []byte, m string) {
-	msg := &WSMessage{Category: c, File: string(f), Message: m}
+func sendAll(category string, file []byte, message string) {
+	for conn := range connections {
+		sendTo(conn, category, file, message)
+	}
+}
+
+func sendTo(c *websocket.Conn, category string, file []byte, message string) {
+	msg := &WSMessage{Category: category, File: string(file), Message: message}
 	output, err := json.Marshal(msg)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-	for conn := range connections {
-		if err := conn.WriteMessage(websocket.TextMessage, output); err != nil {
-			delete(connections, conn)
-			conn.Close()
-		}
+	if err := c.WriteMessage(websocket.TextMessage, output); err != nil {
+		delete(connections, c)
+		c.Close()
 	}
 }
 
@@ -50,6 +54,6 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 			conn.Close()
 			return
 		}
-		dealWith(msg)
+		dealWith(msg, conn)
 	}
 }
