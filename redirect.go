@@ -12,7 +12,7 @@ func frameHandler(w http.ResponseWriter, r *http.Request) {
 	transport := &http.Transport{DisableCompression: true}
 	client := &http.Client{Transport: transport}
 
-	response, err := client.Get(sherbetFile.Frame + r.URL.Path[1:])
+	response, err := client.Get(app.Frame + r.URL.Path[1:])
 
 	if err != nil {
 		fmt.Printf("%s", err)

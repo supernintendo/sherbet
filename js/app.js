@@ -1,5 +1,5 @@
 var $ = require("jquery"),
-    conn = new WebSocket("ws://localhost:8080/ws"),
+    conn = new WebSocket("ws://localhost:7428/ws"),
     changeStylesheet = function(stylesheet) {
         var element,
             override = document.head.querySelector("#sherbet-style");
@@ -24,6 +24,7 @@ conn.onopen = function(e) {
 
 conn.onmessage = function(e) {
     var message = JSON.parse(e.data);
+    // console.log(message);
 
     switch (message.Category) {
         case "CSS":

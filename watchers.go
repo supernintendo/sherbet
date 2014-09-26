@@ -57,7 +57,7 @@ func activateWatcher(w Watcher) {
 			}
 		}
 	}()
-	err = activated.Watch(sherbetFile.RootPath)
+	err = activated.Watch(app.RootPath)
 	if err != nil {
 		log.Fatal(err)
 	}
